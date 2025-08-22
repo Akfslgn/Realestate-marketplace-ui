@@ -1,0 +1,17 @@
+# Exported from Render on 2025-06-17T01:13:40Z
+services:
+  - type: web
+    name: realestate-marketplace
+    runtime: static
+    repo: https://github.com/dmytro-ch21/sample-realestate-ui
+    envVars:
+      - key: VITE_APP_NAME
+        sync: false
+      - key: VITE_API_PREFIX
+        sync: false
+      - key: VITE_BACKEND_HOST
+        sync: false
+    buildCommand: npm install; npm run build
+    staticPublishPath: dist
+    autoDeployTrigger: commit
+version: "1.0.1"

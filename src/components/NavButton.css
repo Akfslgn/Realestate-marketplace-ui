@@ -1,0 +1,73 @@
+/* Desktop Navigation Styles */
+@media (min-width: 992px) {
+  a.active {
+    color: rgb(34, 0, 120);
+    text-decoration: none;
+    margin: 0 0.5rem 0 0.5rem;
+  }
+
+  a.not-active {
+    color: #000000e9 !important;
+    text-decoration: none;
+    margin: 0 0.5rem 0 0.5rem;
+  }
+
+  a.active:hover,
+  a.not-active:hover {
+    color: rgba(61, 61, 61, 0.874) !important;
+  }
+}
+
+/* Mobile Bottom Navigation Styles */
+@media (max-width: 991.98px) {
+  .nav-link {
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    border-radius: 0.5rem !important;
+    min-height: 55px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 0.5rem 0.25rem !important;
+  }
+
+  .nav-link.active {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+    color: var(--bs-primary) !important;
+    font-weight: 600 !important;
+  }
+
+  .nav-link.not-active {
+    color: #6c757d !important;
+    background-color: transparent !important;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+    color: var(--bs-primary) !important;
+  }
+
+  .nav-item {
+    flex: 1 !important;
+    max-width: 80px !important;
+  }
+
+  /* Icon specific styles */
+  .nav-link .fs-5 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .nav-link .small {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+  }
+}
+
+/* Add padding to body for bottom navigation */
+@media (max-width: 991.98px) {
+  body {
+    padding-bottom: 70px !important;
+  }
+}

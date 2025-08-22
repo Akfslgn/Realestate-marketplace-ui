@@ -1,0 +1,10 @@
+.hero {
+    background-image: url('https://res.cloudinary.com/dncnlnhlq/image/upload/v1746921242/listing_images/r2ux21ww2za4jtci9pmv.png');
+    height: 40vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.text-shadow {
+    text-shadow: 2px 2px 8px rgba(126, 126, 126, 0.7);
+}
