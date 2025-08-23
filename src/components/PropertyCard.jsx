@@ -86,11 +86,11 @@ function PropertyCard({
               src={imageUrl}
               className="card-img-top"
               alt={property.title}
-              style={{ 
-                height: "200px", 
+              style={{
+                height: "200px",
                 width: "100%",
                 objectFit: "cover",
-                maxWidth: "100%" 
+                maxWidth: "100%",
               }}
             />
 
