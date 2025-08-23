@@ -76,7 +76,10 @@ function PropertyCard({
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Link to={`/listings/${property.id}`} className="text-decoration-none flex-grow-1">
+      <Link
+        to={`/listings/${property.id}`}
+        className="text-decoration-none flex-grow-1"
+      >
         <div className="card h-100">
           <div className="position-relative">
             <img

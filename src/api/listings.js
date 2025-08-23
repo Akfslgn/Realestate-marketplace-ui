@@ -75,8 +75,7 @@ export async function getListingById(listingId) {
   const url = `${API_BASE}${API_PREFIX}/listings/${listingId}`;
   const response = await fetch(url, {
     method: "GET",
-    headers: {
-    },
+    headers: {},
   });
 
   const data = await response.json();
@@ -97,8 +96,7 @@ export async function getAllListings() {
   const url = `${API_BASE}${API_PREFIX}/listings`;
   const response = await fetch(url, {
     method: "GET",
-    headers: {
-    },
+    headers: {},
   });
 
   const data = await response.json();
