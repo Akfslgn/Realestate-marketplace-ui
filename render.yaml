@@ -1,21 +1,20 @@
 # Render.com Static Site Configuration
 services:
-  - type: web
-    name: realestatemarketplace
-    runtime: static
+  - type: static
+    name: realestatemarketplace-new
     repo: https://github.com/Akfslgn/Realestate-marketplace-ui
     buildCommand: npm install && npm run build
     staticPublishPath: dist
-    envVars:
-      - key: VITE_BACKEND_HOST
-        value: "https://realestate-backend.onrender.com"
-      - key: VITE_APP_NAME
-        value: "Real Estate Marketplace"
-      - key: VITE_API_PREFIX
-        value: "/api/v1"
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
+    envVars:
+      - key: VITE_BACKEND_HOST
+        value: https://realestate-backend.onrender.com
+      - key: VITE_API_PREFIX
+        value: /api/v1
+      - key: VITE_APP_NAME
+        value: Real Estate Marketplace
     autoDeployTrigger: commit
 version: "1"
