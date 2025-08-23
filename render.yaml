@@ -1,8 +1,4 @@
-# Render.co    envVars:
-      - key: VITE_BACKEND_HOST
-        value: https://five-guys-university-backend.onrender.com
-      - key: VITE_API_PREFIX
-        value: /api/v1tic Site Configuration
+# Render.com Static Site Configuration
 services:
   - type: static
     name: realestatemarketplace-new
@@ -15,7 +11,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_BACKEND_HOST
-        value: https://realestate-backend.onrender.com
+        value: https://five-guys-university-backend.onrender.com
       - key: VITE_API_PREFIX
         value: /api/v1
       - key: VITE_APP_NAME
