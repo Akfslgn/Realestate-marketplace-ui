@@ -1,9 +1,9 @@
-# Exported from Render on 2025-06-17T01:13:40Z
+# Render.com deployment configuration
 services:
   - type: web
-    name: realestate-marketplace
+    name: realestate-marketplace-ui
     runtime: static
-    repo: https://github.com/dmytro-ch21/sample-realestate-ui
+    repo: https://github.com/Akfslgn/Realestate-marketplace-ui
     envVars:
       - key: VITE_APP_NAME
         sync: false
@@ -11,7 +11,7 @@ services:
         sync: false
       - key: VITE_BACKEND_HOST
         sync: false
-    buildCommand: npm install; npm run build
+    buildCommand: npm install && npm run build
     staticPublishPath: dist
     autoDeployTrigger: commit
 version: "1.0.1"
