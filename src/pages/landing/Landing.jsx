@@ -56,9 +56,9 @@ function Landing() {
           </div>
         ) : (
           /* Property Listing - Only first 4 */
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 justify-content-center">
             {listings.map((property) => (
-              <div key={property.id} className="col d-flex">
+              <div key={property.id} className="col d-flex" style={{ maxWidth: "300px" }}>
                 <PropertyCard property={property} showWishlistButton={true} />
               </div>
             ))}
