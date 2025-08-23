@@ -3,7 +3,6 @@ const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
 const jsonHeaders = {
   "Content-Type": "application/json",
-  "User-Agent": "client-web",
 };
 
 /**

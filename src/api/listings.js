@@ -3,7 +3,6 @@ const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
 const jsonHeaders = {
   "Content-Type": "application/json",
-  "User-Agent": "client-web",
 };
 
 /**
@@ -52,7 +51,6 @@ export async function uploadListingImage(token, listingId, imageFile, caption) {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "client-web",
       // Don't set Content-Type for FormData
     },
     body: formData,
@@ -78,7 +76,6 @@ export async function getListingById(listingId) {
   const response = await fetch(url, {
     method: "GET",
     headers: {
-      "User-Agent": "client-web",
     },
   });
 
@@ -101,7 +98,6 @@ export async function getAllListings() {
   const response = await fetch(url, {
     method: "GET",
     headers: {
-      "User-Agent": "client-web",
     },
   });
 
@@ -127,7 +123,6 @@ export async function deleteListing(token, listingId) {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "client-web",
     },
   });
 

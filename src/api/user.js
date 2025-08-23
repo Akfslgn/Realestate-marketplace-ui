@@ -3,7 +3,6 @@ const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
 const jsonHeaders = {
   "Content-Type": "application/json",
-  "User-Agent": "client-web",
 };
 
 /**
@@ -94,7 +93,6 @@ export async function uploadProfileImage(token, userId, imageFile) {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
-      "User-Agent": "client-web",
       // Don't set Content-Type for FormData - browser will set it automatically with boundary
     },
     body: formData,
@@ -122,7 +120,6 @@ export async function addToWishlist(token, userId, listingId) {
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "User-Agent": "client-web",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -149,7 +146,6 @@ export async function removeFromWishlist(token, userId, wishlistItemId) {
   const response = await fetch(url, {
     method: "DELETE",
     headers: {
-      "User-Agent": "client-web",
       Authorization: `Bearer ${token}`,
     },
   });
