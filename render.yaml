@@ -6,12 +6,12 @@ services:
     repo: https://github.com/Akfslgn/Realestate-marketplace-ui
     envVars:
       - key: VITE_BACKEND_HOST
-        sync: false
+        value: "https://five-guys-university-backend.onrender.com"
       - key: VITE_APP_NAME
-        sync: false
+        value: "Real Estate Marketplace"
       - key: VITE_API_PREFIX
-        sync: false
-    buildCommand: npm install; npm run build
+        value: "/api/v1"
+    buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
       - type: rewrite
