@@ -1,9 +1,11 @@
-# Exported from Render on 2025-08-23T04:58:46Z
+# Render.com Static Site Configuration
 services:
   - type: web
     name: realestatemarketplace
     runtime: static
     repo: https://github.com/Akfslgn/Realestate-marketplace-ui
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_HOST
         value: "https://realestate-backend.onrender.com"
@@ -11,8 +13,6 @@ services:
         value: "Real Estate Marketplace"
       - key: VITE_API_PREFIX
         value: "/api/v1"
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
     routes:
       - type: rewrite
         source: /*
