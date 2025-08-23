@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllListings } from "../../api/listings";
 import Hero from "../../components/Hero";
-import PropertyListing from "../../components/PropertyListings";
+import PropertyCard from "../../components/PropertyCard";
 
 function Landing() {
   const [listings, setListings] = useState([]);
@@ -56,7 +56,13 @@ function Landing() {
           </div>
         ) : (
           /* Property Listing - Only first 4 */
-          <PropertyListing properties={listings} />
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {listings.map((property) => (
+              <div key={property.id} className="col d-flex">
+                <PropertyCard property={property} showWishlistButton={true} />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
