@@ -216,8 +216,7 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
                 <option value="house">House</option>
                 <option value="apartment">Apartment</option>
                 <option value="condo">Condo</option>
-                <option value="townhouse">Townhouse</option>
-                <option value="commercial">Commercial</option>
+                <option value="land">Land</option>
               </select>
               <input
                 className="form-control mb-2"
