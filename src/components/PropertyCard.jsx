@@ -75,9 +75,9 @@ function PropertyCard({
   };
 
   return (
-    <div>
-      <Link to={`/listings/${property.id}`} className="text-decoration-none">
-        <div className="card">
+    <div className="h-100 d-flex flex-column">
+      <Link to={`/listings/${property.id}`} className="text-decoration-none flex-grow-1">
+        <div className="card h-100">
           <div className="position-relative">
             <img
               src={imageUrl}
@@ -115,7 +115,7 @@ function PropertyCard({
               </div>
             )}
           </div>
-          <div className="card-body">
+          <div className="card-body d-flex flex-column">
             {/* Price */}
             <h5 className="card-title fw-bold mb-1">{formatPriceUS}</h5>
             {/* Details */}
@@ -135,7 +135,7 @@ function PropertyCard({
               {`${property.address}, ${property.city}, ${property.state}, ${property.zip_code}`}
             </p>
 
-            <div className="d-flex align-items-center small text-muted">
+            <div className="d-flex align-items-center small text-muted mt-auto">
               <span className="text-capitalize">
                 <CiShoppingTag /> {property.property_type}
               </span>

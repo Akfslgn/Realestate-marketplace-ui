@@ -86,14 +86,7 @@ function AISearch() {
                     >
                       "Show me luxury properties."
                     </button>
-                    <button
-                      className="btn btn-outline-secondary btn-sm"
-                      onClick={() =>
-                        setQuery("Properties that are close to the ocean.")
-                      }
-                    >
-                      "Close to the ocean."
-                    </button>
+
                     <button
                       className="btn btn-outline-secondary btn-sm"
                       onClick={() =>
