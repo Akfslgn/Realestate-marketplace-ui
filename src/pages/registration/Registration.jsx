@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { registerUser } from "../../api/auth";
+import { registerUser, loginUser } from "../../api/auth";
 import { isValidPassword } from "../../utils/helpers";
+import { useGlobalStore } from "../../hooks/useGlobalStore";
 
 const Registration = () => {
   const navigate = useNavigate();
+  const { store, dispatch } = useGlobalStore();
   const [showError, setShowError] = useState({ show: false, message: null });
 
   const [formData, setFormData] = useState({
@@ -36,6 +38,30 @@ const Registration = () => {
       navigate("/login");
     } catch (e) {
       console.error("Registration error:", e.message);
+      setShowError({
+        show: true,
+        message: e.message,
+      });
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    const demoCredentials = {
+      email: "qwerty@gmail.com",
+      password: "123456"
+    };
+    
+    dispatch({ type: "AUTH_START" });
+
+    try {
+      console.log("Trying Demo Login...");
+      const data = await loginUser(demoCredentials);
+      dispatch({ type: "AUTH_SUCCESS", payload: data });
+      console.log("Demo Login Success Navigating Home...");
+      navigate("/home");
+    } catch (e) {
+      console.log("Demo login error:", e.message);
+      dispatch({ type: "AUTH_FAILURE", payload: e.message });
       setShowError({
         show: true,
         message: e.message,
@@ -116,9 +142,17 @@ const Registration = () => {
                       )}
                     </>
                     {/* Submit Button */}
-                    <div className="col-12 d-flex justify-content-center mt-4">
+                    <div className="col-12 d-flex flex-column gap-2 mt-4">
                       <button type="submit" className="btn btn-primary px-4">
                         Register
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn btn-outline-secondary px-4"
+                        onClick={handleDemoLogin}
+                        disabled={store.auth.loading}
+                      >
+                        Demo Login
                       </button>
                     </div>
 

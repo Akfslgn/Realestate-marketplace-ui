@@ -36,6 +36,26 @@ const Login = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    const demoCredentials = {
+      email: "qwerty@gmail.com",
+      password: "123456"
+    };
+    
+    dispatch({ type: "AUTH_START" });
+
+    try {
+      console.log("Trying Demo Login...");
+      const data = await loginUser(demoCredentials);
+      dispatch({ type: "AUTH_SUCCESS", payload: data });
+      console.log("Demo Login Success Navigating Home...");
+      navigate("/home");
+    } catch (e) {
+      console.log("Demo login error:", e.message);
+      dispatch({ type: "AUTH_FAILURE", payload: e.message });
+    }
+  };
+
   return (
     <div className="bg-light min-vh-100">
       <div className="container py-4">
@@ -81,9 +101,17 @@ const Login = () => {
                     ""
                   )}
                   {/* Login Button */}
-                  <div className="d-flex justify-content-center mt-4">
+                  <div className="d-flex flex-column gap-2 mt-4">
                     <button type="submit" className="btn btn-primary px-4">
                       Login
+                    </button>
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary px-4"
+                      onClick={handleDemoLogin}
+                      disabled={store.auth.loading}
+                    >
+                      Demo Login
                     </button>
                   </div>
 
