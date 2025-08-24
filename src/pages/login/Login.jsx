@@ -39,9 +39,9 @@ const Login = () => {
   const handleDemoLogin = async () => {
     const demoCredentials = {
       email: "qwerty@gmail.com",
-      password: "123456"
+      password: "123456",
     };
-    
+
     dispatch({ type: "AUTH_START" });
 
     try {
@@ -105,9 +105,9 @@ const Login = () => {
                     <button type="submit" className="btn btn-primary px-4">
                       Login
                     </button>
-                    <button 
-                      type="button" 
-                      className="btn btn-outline-secondary px-4"
+                    <button
+                      type="button"
+                      className="btn btn-primary px-4"
                       onClick={handleDemoLogin}
                       disabled={store.auth.loading}
                     >

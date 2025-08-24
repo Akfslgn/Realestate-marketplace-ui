@@ -148,7 +148,7 @@ const Registration = () => {
                       </button>
                       <button 
                         type="button" 
-                        className="btn btn-outline-secondary px-4"
+                        className="btn btn-primary px-4"
                         onClick={handleDemoLogin}
                         disabled={store.auth.loading}
                       >
