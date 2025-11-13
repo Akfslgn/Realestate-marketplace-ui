@@ -5,7 +5,7 @@ const Navbar = ({ children }) => {
       <nav className="navbar navbar-expand-lg navbar-light bg-white py-2 sticky-top shadow-sm d-none d-lg-flex">
         <div className="container">
           <a className="navbar-brand me-5" href="/">
-            <span className="text-primary fw-bold fs-4">HomeHaven</span>
+            <span className="text-primary fw-bold fs-4">HomeHeaven</span>
           </a>
 
           <div className="navbar-collapse">
@@ -20,7 +20,7 @@ const Navbar = ({ children }) => {
       <nav className="navbar navbar-light bg-white py-2 sticky-top shadow-sm d-lg-none">
         <div className="container">
           <a className="navbar-brand mx-auto" href="/">
-            <span className="text-primary fw-bold fs-4">HomeHaven</span>
+            <span className="text-primary fw-bold fs-4">HomeHeaven</span>
           </a>
         </div>
       </nav>

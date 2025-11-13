@@ -9,11 +9,6 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
-    headers:
-      - key: X-Frame-Options
-        value: DENY
-      - key: X-Content-Type-Options
-        value: nosniff
     envVars:
       - key: VITE_BACKEND_HOST
         value: https://five-guys-university-backend.onrender.com
