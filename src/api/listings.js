@@ -143,6 +143,13 @@ export async function deleteListing(token, listingId) {
  */
 export async function updateListing(token, listingId, updatedListingData) {
   const url = `${API_BASE}${API_PREFIX}/listings/${listingId}`;
+  
+  console.log("API Update Request:");
+  console.log("URL:", url);
+  console.log("Listing ID:", listingId);
+  console.log("Token:", token ? "Present" : "Missing");
+  console.log("Data:", updatedListingData);
+  
   const response = await fetch(url, {
     method: "PUT",
     headers: {
@@ -151,6 +158,9 @@ export async function updateListing(token, listingId, updatedListingData) {
     },
     body: JSON.stringify(updatedListingData),
   });
+
+  console.log("Response Status:", response.status);
+  console.log("Response OK:", response.ok);
 
   const data = await response.json();
 

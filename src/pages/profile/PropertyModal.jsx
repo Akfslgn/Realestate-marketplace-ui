@@ -103,6 +103,8 @@ function PropertyModal({
           return;
         }
         
+        console.log("Sending update data:", baseListingData);
+        
         const updateResponse = await updateListing(
           token,
           editProperty.id,
