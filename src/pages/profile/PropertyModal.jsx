@@ -91,6 +91,7 @@ function PropertyModal({
 
       if (isEditMode) {
         // Update existing listing - don't include owner_id
+        console.log("=== NEW DEBUG VERSION ===");
         console.log("Editing property:", editProperty);
         console.log("Current user ID:", decodedToken.sub);
         console.log("Property user_id:", editProperty.user_id);
@@ -108,19 +109,13 @@ function PropertyModal({
         
         console.log("Sending update data:", baseListingData);
         
-        // Add owner information for update
-        const updateData = {
-          ...baseListingData,
-          user_id: parseInt(decodedToken.sub),
-          owner_id: parseInt(decodedToken.sub)
-        };
-        
-        console.log("Final update data with owner:", updateData);
+        // Don't send owner information in update - backend doesn't allow changing ownership
+        console.log("Final update data for backend:", baseListingData);
         
         const updateResponse = await updateListing(
           token,
           editProperty.id,
-          updateData
+          baseListingData
         );
         updatedListing = updateResponse.listing || updateResponse;
 
