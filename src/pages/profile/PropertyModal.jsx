@@ -98,11 +98,16 @@ function PropertyModal({
         console.log("Property user_id:", editProperty.user_id);
         console.log("Property owner_id:", editProperty.owner_id);
         console.log("Full property object:", editProperty);
-        
+
         // Check if user owns this property - use user_id instead of owner_id
         const propertyOwnerId = editProperty.user_id || editProperty.owner_id;
-        console.log("Authorization check - Property Owner ID:", propertyOwnerId, "Current User ID:", parseInt(decodedToken.sub));
-        
+        console.log(
+          "Authorization check - Property Owner ID:",
+          propertyOwnerId,
+          "Current User ID:",
+          parseInt(decodedToken.sub)
+        );
+
         // Temporarily disable frontend authorization check for debugging
         // if (propertyOwnerId !== parseInt(decodedToken.sub)) {
         //   alert("You can only edit your own properties!");
@@ -110,12 +115,12 @@ function PropertyModal({
         //   setIsSubmitting(false);
         //   return;
         // }
-        
+
         console.log("Sending update data:", baseListingData);
-        
+
         // Don't send owner information in update - backend doesn't allow changing ownership
         console.log("Final update data for backend:", baseListingData);
-        
+
         const updateResponse = await updateListing(
           token,
           editProperty.id,
@@ -142,7 +147,7 @@ function PropertyModal({
           ...baseListingData,
           owner_id: parseInt(decodedToken.sub),
         };
-        
+
         const listingResponse = await createListing(token, createListingData);
         const newListing = listingResponse.listing || listingResponse;
 
