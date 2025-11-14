@@ -93,10 +93,13 @@ function PropertyModal({
         // Update existing listing - don't include owner_id
         console.log("Editing property:", editProperty);
         console.log("Current user ID:", decodedToken.sub);
-        console.log("Property owner ID:", editProperty.owner_id);
+        console.log("Property user_id:", editProperty.user_id);
+        console.log("Property owner_id:", editProperty.owner_id);
+        console.log("Full property object:", editProperty);
         
-        // Check if user owns this property
-        if (editProperty.owner_id !== parseInt(decodedToken.sub)) {
+        // Check if user owns this property - use user_id instead of owner_id
+        const propertyOwnerId = editProperty.user_id || editProperty.owner_id;
+        if (propertyOwnerId !== parseInt(decodedToken.sub)) {
           alert("You can only edit your own properties!");
           setShowAddModal(false);
           setIsSubmitting(false);
@@ -105,10 +108,19 @@ function PropertyModal({
         
         console.log("Sending update data:", baseListingData);
         
+        // Add owner information for update
+        const updateData = {
+          ...baseListingData,
+          user_id: parseInt(decodedToken.sub),
+          owner_id: parseInt(decodedToken.sub)
+        };
+        
+        console.log("Final update data with owner:", updateData);
+        
         const updateResponse = await updateListing(
           token,
           editProperty.id,
-          baseListingData
+          updateData
         );
         updatedListing = updateResponse.listing || updateResponse;
 
