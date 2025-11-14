@@ -156,8 +156,8 @@ export async function updateListing(token, listingId, updatedListingData) {
 
   console.log("Update listing response:", data);
 
-  if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+  if (!response.ok || data.error) {
+    throw new Error(data.error || data.message || response.statusText);
   }
   return data;
 }

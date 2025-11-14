@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
-import { createListing, uploadListingImage, updateListing } from "../../api/listings";
+import {
+  createListing,
+  uploadListingImage,
+  updateListing,
+} from "../../api/listings";
 import { getToken, getDecodedToken } from "../../utils/auth";
 
-function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = null }) {
+function PropertyModal({
+  setShowAddModal,
+  setProfile,
+  profile,
+  editProperty = null,
+}) {
   const [newProperty, setNewProperty] = useState({
     title: "",
     description: "",
@@ -64,8 +73,7 @@ function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = nu
       const decodedToken = getDecodedToken();
 
       // Prepare listing data
-      const listingData = {
-        owner_id: parseInt(decodedToken.sub),
+      const baseListingData = {
         title: newProperty.title,
         description: newProperty.description,
         price: parseFloat(newProperty.price),
@@ -82,26 +90,47 @@ function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = nu
       let updatedListing;
 
       if (isEditMode) {
-        // Update existing listing
-        const updateResponse = await updateListing(token, editProperty.id, listingData);
-        updatedListing = updateResponse.listing || updateResponse;
+        // Update existing listing - don't include owner_id
+        console.log("Editing property:", editProperty);
+        console.log("Current user ID:", decodedToken.sub);
+        console.log("Property owner ID:", editProperty.owner_id);
         
+        // Check if user owns this property
+        if (editProperty.owner_id !== parseInt(decodedToken.sub)) {
+          alert("You can only edit your own properties!");
+          setShowAddModal(false);
+          setIsSubmitting(false);
+          return;
+        }
+        
+        const updateResponse = await updateListing(
+          token,
+          editProperty.id,
+          baseListingData
+        );
+        updatedListing = updateResponse.listing || updateResponse;
+
         // Update the existing listing in profile
-        const updatedOwnedListings = profile.owned_listings.map(listing => 
-          listing.id === editProperty.id 
+        const updatedOwnedListings = profile.owned_listings.map((listing) =>
+          listing.id === editProperty.id
             ? { ...listing, ...updatedListing }
             : listing
         );
-        
+
         setProfile({
           ...profile,
           owned_listings: updatedOwnedListings,
         });
-        
+
         console.log("Property updated successfully!");
       } else {
-        // Create new listing
-        const listingResponse = await createListing(token, listingData);
+        // Create new listing - include owner_id for new listings
+        const createListingData = {
+          ...baseListingData,
+          owner_id: parseInt(decodedToken.sub),
+        };
+        
+        const listingResponse = await createListing(token, createListingData);
         const newListing = listingResponse.listing || listingResponse;
 
         // Upload images if any
@@ -135,7 +164,7 @@ function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = nu
           ...profile,
           owned_listings: [...(profile.owned_listings || []), updatedListing],
         });
-        
+
         console.log("Property created successfully!");
       }
 
@@ -162,8 +191,15 @@ function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = nu
 
       setShowAddModal(false);
     } catch (error) {
-      console.error(`Error ${isEditMode ? 'updating' : 'creating'} property:`, error);
-      alert(`Failed to ${isEditMode ? 'update' : 'create'} property. Please try again.`);
+      console.error(
+        `Error ${isEditMode ? "updating" : "creating"} property:`,
+        error
+      );
+      alert(
+        `Failed to ${
+          isEditMode ? "update" : "create"
+        } property. Please try again.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -347,10 +383,13 @@ function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = nu
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               >
-                {isSubmitting 
-                  ? (isEditMode ? "Updating..." : "Creating...") 
-                  : (isEditMode ? "Update Property" : "Add Property")
-                }
+                {isSubmitting
+                  ? isEditMode
+                    ? "Updating..."
+                    : "Creating..."
+                  : isEditMode
+                  ? "Update Property"
+                  : "Add Property"}
               </button>
             </div>
           </div>
