@@ -148,6 +148,8 @@ export async function updateListing(token, listingId, updatedListingData) {
   console.log("URL:", url);
   console.log("Listing ID:", listingId);
   console.log("Token:", token ? "Present" : "Missing");
+  console.log("Full Token:", token);
+  console.log("Authorization Header:", `Bearer ${token}`);
   console.log("Data:", updatedListingData);
   
   const response = await fetch(url, {
