@@ -51,6 +51,7 @@ function Profile() {
   const [ownedProperties, setOwnedProperties] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [propToDelete, setPropToDelete] = useState(null);
+  const [editProperty, setEditProperty] = useState(null);
 
   // ============================================================================
   // PROFILE DATA LOADING
@@ -190,6 +191,11 @@ function Profile() {
     setPropToDelete(property);
   };
 
+  const openEditModal = (property) => {
+    setEditProperty(property);
+    setShowAddModal(true);
+  };
+
   const confirmDelete = async () => {
     if (!propToDelete) return;
 
@@ -208,6 +214,11 @@ function Profile() {
       console.error("Error deleting property:", error);
       alert("Failed to delete property. Please try again.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+    setEditProperty(null);
   };
 
   // ============================================================================
@@ -247,15 +258,17 @@ function Profile() {
         properties={ownedProperties}
         onDelete={openDeleteModal}
         onAdd={() => setShowAddModal(true)}
+        onEdit={openEditModal}
       />
 
       <PropertyDeleteModal property={propToDelete} onConfirm={confirmDelete} />
 
       {showAddModal && (
         <PropertyModal
-          setShowAddModal={setShowAddModal}
+          setShowAddModal={handleCloseModal}
           setProfile={setProfile}
           profile={profile}
+          editProperty={editProperty}
         />
       )}
     </div>

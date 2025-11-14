@@ -133,3 +133,31 @@ export async function deleteListing(token, listingId) {
   }
   return data;
 }
+
+/**
+ * PUT /listings/{listingId}
+ * @param {string} token - Authorization token
+ * @param {number} listingId - The listing ID to update
+ * @param {Object} updatedListingData - Updated listing data
+ * @return {Promise<Object>} {listing}
+ */
+export async function updateListing(token, listingId, updatedListingData) {
+  const url = `${API_BASE}${API_PREFIX}/listings/${listingId}`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      ...jsonHeaders,
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updatedListingData),
+  });
+
+  const data = await response.json();
+
+  console.log("Update listing response:", data);
+
+  if (!response.ok) {
+    throw new Error(data.error || response.statusText);
+  }
+  return data;
+}

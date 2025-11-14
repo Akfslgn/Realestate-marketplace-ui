@@ -1,6 +1,6 @@
 import PropertyCard from "../../components/PropertyCard";
 
-function PropertyListing({ properties, onDelete, onAdd }) {
+function PropertyListing({ properties, onDelete, onAdd, onEdit }) {
   return (
     <>
       <hr />
@@ -25,14 +25,22 @@ function PropertyListing({ properties, onDelete, onAdd }) {
             {properties.map((property) => (
               <div className="col d-flex flex-column" key={property.id}>
                 <PropertyCard property={property} showWishlistButton={false} />
-                <button
-                  className="btn btn-outline-danger btn-sm w-100 mt-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteModal"
-                  onClick={() => onDelete(property)}
-                >
-                  Delete
-                </button>
+                <div className="d-flex gap-2 mt-2">
+                  <button
+                    className="btn btn-outline-primary btn-sm flex-fill"
+                    onClick={() => onEdit(property)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-outline-danger btn-sm flex-fill"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                    onClick={() => onDelete(property)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>

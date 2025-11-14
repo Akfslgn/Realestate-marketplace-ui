@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { createListing, uploadListingImage } from "../../api/listings"; // Changed from user.js to listings.js
+import { useState, useEffect } from "react";
+import { createListing, uploadListingImage, updateListing } from "../../api/listings";
 import { getToken, getDecodedToken } from "../../utils/auth";
 
-function PropertyModal({ setShowAddModal, setProfile, profile }) {
+function PropertyModal({ setShowAddModal, setProfile, profile, editProperty = null }) {
   const [newProperty, setNewProperty] = useState({
     title: "",
     description: "",
@@ -24,6 +24,32 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isEditMode = !!editProperty;
+
+  // Initialize form with edit data
+  useEffect(() => {
+    if (editProperty) {
+      setNewProperty({
+        title: editProperty.title || "",
+        description: editProperty.description || "",
+        price: editProperty.price?.toString() || "",
+        area_sqft: editProperty.area_sqft?.toString() || "",
+        bathrooms: editProperty.bathrooms?.toString() || "",
+        bedrooms: editProperty.bedrooms?.toString() || "",
+        property_type: editProperty.property_type || "",
+        address: editProperty.address || "",
+        city: editProperty.city || "",
+        state: editProperty.state || "",
+        zip_code: editProperty.zip_code || "",
+        images: [
+          { file: null, caption: "" },
+          { file: null, caption: "" },
+          { file: null, caption: "" },
+          { file: null, caption: "" },
+        ],
+      });
+    }
+  }, [editProperty]);
 
   const handleSubmit = async () => {
     if (!newProperty.title || !newProperty.price) {
@@ -53,41 +79,65 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
         zip_code: newProperty.zip_code,
       };
 
-      // Create the listing first
-      const listingResponse = await createListing(token, listingData);
-      const newListing = listingResponse.listing || listingResponse;
+      let updatedListing;
 
-      // Upload images if any
-      const uploadedImages = [];
-      for (const imageData of newProperty.images) {
-        if (imageData.file) {
-          try {
-            const imageResponse = await uploadListingImage(
-              token,
-              newListing.id,
-              imageData.file,
-              imageData.caption || "Property image"
-            );
-            uploadedImages.push(imageResponse);
-          } catch (error) {
-            console.error("Error uploading image:", error);
+      if (isEditMode) {
+        // Update existing listing
+        const updateResponse = await updateListing(token, editProperty.id, listingData);
+        updatedListing = updateResponse.listing || updateResponse;
+        
+        // Update the existing listing in profile
+        const updatedOwnedListings = profile.owned_listings.map(listing => 
+          listing.id === editProperty.id 
+            ? { ...listing, ...updatedListing }
+            : listing
+        );
+        
+        setProfile({
+          ...profile,
+          owned_listings: updatedOwnedListings,
+        });
+        
+        console.log("Property updated successfully!");
+      } else {
+        // Create new listing
+        const listingResponse = await createListing(token, listingData);
+        const newListing = listingResponse.listing || listingResponse;
+
+        // Upload images if any
+        const uploadedImages = [];
+        for (const imageData of newProperty.images) {
+          if (imageData.file) {
+            try {
+              const imageResponse = await uploadListingImage(
+                token,
+                newListing.id,
+                imageData.file,
+                imageData.caption || "Property image"
+              );
+              uploadedImages.push(imageResponse);
+            } catch (error) {
+              console.error("Error uploading image:", error);
+            }
           }
         }
+
+        // Add the new listing to profile
+        updatedListing = {
+          ...newListing,
+          images:
+            uploadedImages.length > 0
+              ? uploadedImages
+              : [{ image_url: "https://via.placeholder.com/400x300" }],
+        };
+
+        setProfile({
+          ...profile,
+          owned_listings: [...(profile.owned_listings || []), updatedListing],
+        });
+        
+        console.log("Property created successfully!");
       }
-
-      // Update the profile with the new listing
-      const updatedListing = {
-        ...newListing,
-        images:
-          uploadedImages.length > 0
-            ? uploadedImages
-            : [{ image_url: "https://via.placeholder.com/400x300" }],
-      };
-
-      setProfile({
-        ...profile,
-        owned_listings: [...(profile.owned_listings || []), updatedListing],
-      });
 
       // Reset form and close modal
       setNewProperty({
@@ -111,10 +161,9 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
       });
 
       setShowAddModal(false);
-      console.log("Property created successfully!");
     } catch (error) {
-      console.error("Error creating property:", error);
-      alert("Failed to create property. Please try again.");
+      console.error(`Error ${isEditMode ? 'updating' : 'creating'} property:`, error);
+      alert(`Failed to ${isEditMode ? 'update' : 'create'} property. Please try again.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +179,9 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add New Property</h5>
+              <h5 className="modal-title">
+                {isEditMode ? "Edit Property" : "Add New Property"}
+              </h5>
               <button
                 type="button"
                 className="btn-close"
@@ -296,7 +347,10 @@ function PropertyModal({ setShowAddModal, setProfile, profile }) {
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Creating..." : "Add Property"}
+                {isSubmitting 
+                  ? (isEditMode ? "Updating..." : "Creating...") 
+                  : (isEditMode ? "Update Property" : "Add Property")
+                }
               </button>
             </div>
           </div>
