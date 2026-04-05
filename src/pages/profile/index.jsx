@@ -76,6 +76,7 @@ function Profile() {
           setProfile({
             ...userResponse,
             ...userResponse.profile_information,
+            id: userResponse.id,
           });
 
           setForm({
