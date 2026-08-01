@@ -94,7 +94,7 @@ const Login = () => {
                     />
                   </div>
                   {store.auth.error ? (
-                    <div id="passwordHelpBlock m-2" class="form-text">
+                    <div id="passwordHelpBlock m-2" className="form-text">
                       {store.auth.error}
                     </div>
                   ) : (

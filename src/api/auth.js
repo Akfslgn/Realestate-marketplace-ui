@@ -5,6 +5,30 @@ const jsonHeaders = {
   "Content-Type": "application/json",
 };
 
+async function parseResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+  return {};
+}
+
+function getErrorMessage(data, response) {
+  if (response.status >= 500) {
+    return (
+      data?.message ||
+      "Server is temporarily unavailable. Please try again later."
+    );
+  }
+
+  return (
+    data?.message ||
+    data?.error ||
+    response.statusText ||
+    `Request failed with status ${response.status}`
+  );
+}
+
 /**
  * POST /auth/register
  * @param {Object} payload {username, email, password}
@@ -19,10 +43,10 @@ export async function registerUser(payload) {
     body: JSON.stringify({ email, username, password }),
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   if (!response.ok) {
-    throw new Error(data.message);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -40,12 +64,12 @@ export async function loginUser(payload) {
     body: JSON.stringify(payload),
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Login response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }

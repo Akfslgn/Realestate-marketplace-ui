@@ -5,6 +5,29 @@ const jsonHeaders = {
   "Content-Type": "application/json",
 };
 
+function getErrorMessage(data, response) {
+  if (response.status >= 500) {
+    return (
+      data?.message ||
+      "Server is temporarily unavailable. Please try again later."
+    );
+  }
+
+  return (
+    data?.message ||
+    data?.error ||
+    `Request failed with status ${response.status}`
+  );
+}
+
+async function parseResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+  return {};
+}
+
 /**
  * POST /listings
  * @param {string} token - Authorization token
@@ -22,12 +45,12 @@ export async function createListing(token, payload) {
     body: JSON.stringify(payload),
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Create listing response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -56,12 +79,12 @@ export async function uploadListingImage(token, listingId, imageFile, caption) {
     body: formData,
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Upload listing image response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -78,12 +101,12 @@ export async function getListingById(listingId) {
     headers: {},
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Get listing response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -99,12 +122,12 @@ export async function getAllListings() {
     headers: {},
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Get all listings response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -124,12 +147,12 @@ export async function deleteListing(token, listingId) {
     },
   });
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Delete listing response:", data);
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }
@@ -164,7 +187,7 @@ export async function updateListing(token, listingId, updatedListingData) {
   console.log("Response Status:", response.status);
   console.log("Response OK:", response.ok);
 
-  const data = await response.json();
+  const data = await parseResponse(response);
 
   console.log("Update listing response:", data);
 
@@ -178,7 +201,7 @@ export async function updateListing(token, listingId, updatedListingData) {
   }
 
   if (!response.ok || data.error) {
-    throw new Error(data.error || data.message || response.statusText);
+    throw new Error(getErrorMessage(data, response));
   }
   return data;
 }

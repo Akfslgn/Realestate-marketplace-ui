@@ -27,13 +27,24 @@ const Registration = () => {
     e.preventDefault();
     try {
       console.log("Payload data:", formData);
+      if (formData.password !== formData.confirmPassword) {
+        setShowError({
+          show: true,
+          message: "Password and confirm password must match.",
+        });
+        return;
+      }
+
       if (!isValidPassword(formData.password)) {
         setShowError({
           show: true,
           message:
-            "Password should be 5 characters or more and have at least one digit.",
+            "Password should be 6 characters or more and have at least one digit.",
         });
+        return;
       }
+
+      setShowError({ show: false, message: null });
       await registerUser(formData);
       navigate("/login");
     } catch (e) {
@@ -134,7 +145,7 @@ const Registration = () => {
                     </div>
                     <>
                       {showError.show ? (
-                        <div id="passwordHelpBlock m-2" class="form-text">
+                        <div id="passwordHelpBlock m-2" className="form-text">
                           {showError.message}
                         </div>
                       ) : (
